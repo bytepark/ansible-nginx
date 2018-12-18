@@ -2,23 +2,25 @@
 # nginx provisioning
 
 - name: "[NGINX] Add Signing Key"
+  retries: 3
   apt_key:
     url: "{{ nginx_repo_key }}"
   when: nginx_repo_key is defined
 
 - name: "[NGINX] Add repo to sources list"
+  retries: 3
   apt_repository:
-    repo: "{{nginx_repo}}"
+    repo: "{{ nginx_repo }}"
     state: present
 
 - name: "[NGINX] Install Nginx"
   apt:
     update_cache: yes
-    name: '{{nginx_package}}'
+    name: '{{ nginx_package }}'
     state: present
 
 - name: "[NGINX Secure] | Generate dhparam file"
-  command: openssl dhparam -out {{nginx_dhparam_path}} {{nginx_dhparam_encryption_size | 2048}}
+  command: openssl dhparam -out {{ nginx_dhparam_path }} {{ nginx_dhparam_encryption_size | 2048}}
   args:
     creates: "{{nginx_dhparam_path}}"
   when: nginx_dhparam_path is defined and nginx_dhparam_path

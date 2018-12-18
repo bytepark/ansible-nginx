@@ -17,8 +17,7 @@ galaxy_info:
   galaxy_tags:
     - web
     - server
-    - dehydrated
+    - nginx
     - ssl
-    - letsencrypt
 
 dependencies: []
