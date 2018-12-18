@@ -1,0 +1,169 @@
+# {{ ansible_managed }}
+
+# ------------------------------------------------------------------
+# Default Server - Port 80
+# ------------------------------------------------------------------
+server {
+{% if item.hostname is defined and item.additional_server_names is defined %}
+    server_name {{ item.hostname }} {{ item.additional_server_names }};
+{% endif %}
+{% if item.hostname is defined and item.additional_server_names is not defined %}
+    server_name {{ item.hostname }};
+{% endif %}
+
+    listen       80 {% if item.is_default is defined %}default{% endif %};
+    listen       [::]:80 {% if item.is_default is defined %}default{% endif %};
+
+{% if item.docroot is defined %}
+    root   {{ item.docroot }}/app/web;
+    index  index.html index.htm index.php;
+{% endif %}
+
+{% if item.logfile_separate is defined and item.hostname is defined %}
+    access_log /var/log/nginx/{{ item.hostname }}-access.log {{ item.logfile_format }};
+    error_log /var/log/nginx/{{ item.hostname }}-error.log;
+{% endif %}
+
+    location '/.well-known/acme-challenge' {
+        default_type "text/plain";
+        alias /etc/ssl/dehydrated;
+    }
+
+{% if item.enable_ssl %}
+    location / {
+        rewrite ^(.*) https://$host$uri permanent;
+    }
+{% endif %}
+}
+
+
+{% if item.enable_ssl %}
+{% if item.additional_server_names is defined %}
+# ------------------------------------------------------------------
+# Redirect Domains - Port 443
+# ------------------------------------------------------------------
+server {
+    server_name {{ item.additional_server_names }};
+
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+
+    ssl_certificate         /etc/ssl/certs/{{ item.hostname }}/fullchain.pem;
+    ssl_certificate_key     /etc/ssl/certs/{{ item.hostname }}/privkey.pem;
+    ssl_trusted_certificate /etc/ssl/certs/{{ item.hostname }}/fullchain.pem;
+
+{% if item.docroot is defined %}
+    root   {{ item.docroot }}/app/web;
+    index  index.html index.htm index.php;
+
+{% endif %}
+{% if item.logfile_separate is defined and item.hostname is defined %}
+    access_log /var/log/nginx/{{ item.hostname }}-access.log {{ item.logfile_format }};
+    error_log /var/log/nginx/{{ item.hostname }}-error.log;
+
+{% endif %}
+    location '/.well-known/acme-challenge' {
+        default_type "text/plain";
+        alias /etc/ssl/dehydrated;
+    }
+
+    location / {
+        rewrite ^(.*) https://{{ item.hostname }}$uri permanent;
+    }
+}
+{% endif %}
+{% endif %}
+
+
+{% if item.enable_ssl %}
+# ------------------------------------------------------------------
+# Default Server - Port 443
+# ------------------------------------------------------------------
+server {
+    server_name {{ item.hostname }};
+
+    listen 443 ssl http2 {% if item.is_default is defined %}default{% endif %};
+    listen [::]:443 ssl http2 {% if item.is_default is defined %}default{% endif %};
+
+    ssl_certificate         /etc/ssl/certs/{{ item.hostname }}/fullchain.pem;
+    ssl_certificate_key     /etc/ssl/certs/{{ item.hostname }}/privkey.pem;
+    ssl_trusted_certificate /etc/ssl/certs/{{ item.hostname }}/fullchain.pem;
+
+{% if item.auth_basic_file is defined %}
+        auth_basic            "Restricted";
+        auth_basic_user_file  {{ item.auth_basic_file }};
+
+{% endif %}
+{% if item.docroot is defined %}
+    root   {{ item.docroot }}/app/web;
+    index  index.html index.htm index.php;
+
+{% endif %}
+{% if item.logfile_separate is defined and item.hostname is defined %}
+    access_log /var/log/nginx/{{ item.hostname }}-access.log {{ item.logfile_format }};
+    error_log /var/log/nginx/{{ item.hostname }}-error.log;
+
+{% endif %}
+{% if item.type == "fastcgi" %}
+    location / {
+        client_max_body_size 0;
+        gzip on;
+        proxy_http_version 1.1;
+
+        try_files $uri $uri/ /index.php?$args;
+    }
+    location ~ \.php$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
+        fastcgi_pass {{ item.fastcgi_address }};
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_index index.php;
+        include fastcgi_params;
+    }
+
+{% endif %}
+{% if item.type == "proxy" %}
+    location / {
+        client_max_body_size 0;
+        gzip on;
+        proxy_http_version 1.1;
+
+        {% if item.cache_enable is defined and item.cache_enable %}
+        proxy_redirect off;
+        proxy_cache cache;
+        proxy_cache_valid any {{ item.cache_time }};
+        proxy_cache_use_stale error timeout updating;
+        proxy_cache_revalidate on;
+        proxy_ignore_headers  Expires Cache-Control Set-Cookie;
+
+        # CACHE CONFIGURATION result
+        proxy_cache_bypass $bypass $do_not_cache;
+        proxy_no_cache $do_not_cache;
+
+        add_header X-Cache-Status $upstream_cache_status;
+        {% endif %}
+
+        proxy_set_header    Host                $http_host;
+        proxy_set_header    X-Real-IP           $remote_addr;
+        proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
+        proxy_set_header    X-Forwarded-Proto   $scheme;
+
+        {% if item.enable_websocket is defined %}
+        proxy_set_header    Upgrade             $http_upgrade;
+        proxy_set_header    Connection          "upgrade";
+        {% endif %}
+
+        proxy_read_timeout  600;
+
+        proxy_pass          {{ item.proxy_address }};
+    }
+
+{% endif %}
+{% if item.pagespeed is defined %}
+        {% if item.pagespeed == true %}
+        include /etc/nginx/pagespeed.conf;
+        {% endif %}
+{% endif %}
+
+}
+{% endif %}

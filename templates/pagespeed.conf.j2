@@ -1,0 +1,6 @@
+location ~* \.(?:ico|css|application/javascript|gif|jpe?g|png|js|svg|woff|ttf|otf|woff2)$ {
+    expires 365d;
+    access_log off;
+    add_header Cache-Control "public";
+    add_header X-Cache $upstream_cache_status;
+}

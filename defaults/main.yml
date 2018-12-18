@@ -1,0 +1,29 @@
+---
+# repo url - either deb or ppa (e.g "ppa:bytepark/nginx-mainline")
+nginx_repo: "deb https://nginx.org/packages/ubuntu/ bionic nginx"
+# repo key - when repo needs signing key (e.g. http://nginx.org/keys/nginx_signing.key)
+nginx_repo_key: ""
+# package name to install (can allso be nginx-full e.g)
+nginx_package: "nginx"
+
+# list of vhosts with following keys
+#   type                        - static/fastcgi/proxy - which type to use
+#   hostname                    - main server name
+#   additional_server_names     - alias domains
+#   is_default                  - whether this vhost is the default listener
+#   docroot                     - document root for vhost
+#   logfile_separate            - true/false - for separate log file for this vhost
+#   logfile_format              - name of a different logfile format defined in nginx.conf
+#   enable_ssl                  - true/false - whether to enable SSL
+#   cache_enable                - true/false - whether to enable caching (fastcgi/proxy only)
+#   cache_time                  - e.g. 30s - how long to cache valid responses
+#   enable_websocket            - true/false - for proxy setups, enable websocket listening
+nginx_vhosts: []
+
+#   nginx_ssl_type              - modern/intermediate - cipher config from mozilla server configurator
+nginx_ssl_type: "modern"
+#   nginx_enable_hsts           - whether to enable HSTS
+nginx_enable_hsts: false
+
+nginx_dhparam_path: "/etc/ssl/dhparam.pem"
+nginx_dhparam_encryption_size: 2048

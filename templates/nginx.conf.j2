@@ -1,0 +1,67 @@
+# {{ ansible_managed }}
+user www-data;
+worker_processes 2;
+pid /run/nginx.pid;
+
+events {
+    worker_connections 1024;
+    use epoll;
+    # multi_accept on;
+}
+
+http {
+
+    ##
+    # Basic Settings
+    ##
+
+    sendfile off;
+    tcp_nopush on;
+    tcp_nodelay on;
+    keepalive_timeout 65;
+    types_hash_max_size 2048;
+    server_tokens off;
+    proxy_hide_header X-Powered-By;
+
+    # server_names_hash_bucket_size 64;
+    # server_name_in_redirect off;
+
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
+    ##
+    # Cache Settings
+    ##
+    proxy_cache_path /dev/shm/nginx keys_zone=cache:10m levels=1:2 inactive=600s max_size=100m;
+    proxy_cache_key $host:$server_port$uri$is_args$args;
+    proxy_ignore_headers "Cache-Control";
+    proxy_ignore_headers "Expires";
+
+    ##
+    # Logging Settings
+    ##
+
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
+
+    log_format bytepark '$remote_addr - $remote_user [$time_local]  $status "$request" $body_bytes_sent "$http_referer" '
+    '"$http_user_agent" "$http_x_forwarded_for" $scheme $host cache:$upstream_cache_status $request_time';
+
+    ##
+    # Gzip Settings
+    ##
+
+    gzip on;
+    gzip_disable "msie6";
+
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_buffers 16 8k;
+    gzip_http_version 1.1;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript image/svg+xml;
+
+    include /etc/nginx/secure.conf;
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;
+}
