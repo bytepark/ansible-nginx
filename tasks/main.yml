@@ -20,9 +20,9 @@
     state: present
 
 - name: "[NGINX Secure] | Generate dhparam file"
-  command: openssl dhparam -out {{ nginx_dhparam_path }} {{ nginx_dhparam_encryption_size | 2048}}
+  command: openssl dhparam -out {{ nginx_dhparam_path }} {{ nginx_dhparam_encryption_size }}
   args:
-    creates: "{{nginx_dhparam_path}}"
+    creates: "{{ nginx_dhparam_path }}"
   when: nginx_dhparam_path is defined and nginx_dhparam_path
   notify:
     - reload nginx
