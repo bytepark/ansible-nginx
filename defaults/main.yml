@@ -18,6 +18,9 @@ nginx_package: "nginx"
 #   cache_enable                - true/false - whether to enable caching (fastcgi/proxy only)
 #   cache_time                  - e.g. 30s - how long to cache valid responses
 #   enable_websocket            - true/false - for proxy setups, enable websocket listening
+#   naxsi_enabled               - true/false - whether to include NAXSI WAF
+#   naxsi_mode_learning         - true/false - whether to enable learningmode
+#   naxsi_denied_url            - url for cases of denied requests
 nginx_vhosts: []
 
 #   nginx_ssl_type              - modern/intermediate - cipher config from mozilla server configurator
@@ -27,3 +30,6 @@ nginx_enable_hsts: false
 
 nginx_dhparam_path: "/etc/ssl/dhparam.pem"
 nginx_dhparam_encryption_size: 2048
+
+nginx_naxsi_enable: false
+nginx_naxsi_rules_file: "https://raw.githubusercontent.com/nbs-system/naxsi/master/naxsi_config/naxsi_core.rules"

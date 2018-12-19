@@ -127,8 +127,24 @@ server {
         client_max_body_size 0;
         gzip on;
         proxy_http_version 1.1;
+{% if item.naxsi_enable %}
+        ## Naxsi rules
+        {% if item.naxsi_mode_learning %}
+        LearningMode;
+        {% endif %}
 
-        {% if item.cache_enable is defined and item.cache_enable %}
+        SecRulesEnabled;
+        DeniedUrl "{{ item.naxsi_denied_url }}";
+
+        ## check rules
+        CheckRule "$SQL >= 10" BLOCK;
+        CheckRule "$RFI >= 8" BLOCK;
+        CheckRule "$TRAVERSAL >= 4" BLOCK;
+        CheckRule "$EVADE >= 4" BLOCK;
+        CheckRule "$XSS >= 8" BLOCK;
+
+{% endif %}
+{% if item.cache_enable is defined and item.cache_enable %}
         proxy_redirect off;
         proxy_cache cache;
         proxy_cache_valid any {{ item.cache_time }};
@@ -141,8 +157,8 @@ server {
         proxy_no_cache $do_not_cache;
 
         add_header X-Cache-Status $upstream_cache_status;
-        {% endif %}
 
+{% endif %}
         proxy_set_header    Host                $http_host;
         proxy_set_header    X-Real-IP           $remote_addr;
         proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
