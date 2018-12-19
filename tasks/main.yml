@@ -41,8 +41,8 @@
     - "{{ nginx_vhosts | default([]) }}"
 
 - name: "[NGINX] Get Naxsi Rules"
-  get_url: url={{ nginx_naxis_rules_file }} dest=/etc/nginx/naxsi_core.rules
-  when: nginx_naxsi_enable and nginx_naxis_rules_file is defined
+  get_url: url={{ nginx_naxsi_rules_file }} dest=/etc/nginx/naxsi_core.rules
+  when: nginx_naxsi_enable and nginx_naxsi_rules_file is defined
 
 - name: "[NGINX] Copy secure.conf"
   template:
