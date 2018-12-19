@@ -18,7 +18,7 @@ nginx_package: "nginx"
 #   cache_enable                - true/false - whether to enable caching (fastcgi/proxy only)
 #   cache_time                  - e.g. 30s - how long to cache valid responses
 #   enable_websocket            - true/false - for proxy setups, enable websocket listening
-#   naxsi_enabled               - true/false - whether to include NAXSI WAF
+#   naxsi_enable                - true/false - whether to include NAXSI WAF
 #   naxsi_mode_learning         - true/false - whether to enable learningmode
 #   naxsi_denied_url            - url for cases of denied requests
 nginx_vhosts: []
