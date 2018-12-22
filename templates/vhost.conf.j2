@@ -105,30 +105,24 @@ server {
 
 {% endif %}
 
+{% include "vhost-location-secure.conf.j2" %}
+
 {% if item.type == "fastcgi" %}
     location / {
-        client_max_body_size 0;
-        gzip on;
-        proxy_http_version 1.1;
+        {% include "vhost-location-all.conf.j2" %}
 
-{% if item.naxsi_enable is defined and item.naxsi_enable %}
-        ## Naxsi rules
-        {% if item.naxsi_mode_learning %}
-        LearningMode;
-        {% endif %}
+{% if item.cache_enable is defined and item.cache_enable %}
+        fastcgi_cache fastcgi_cache;
+        fastcgi_cache_valid any {{ item.cache_time }};
+        fastcgi_cache_revalidate on;
+        fastcgi_ignore_headers Expires Cache-Control Set-Cookie;
 
-        SecRulesEnabled;
-        DeniedUrl "{{ item.naxsi_denied_url }}";
+        # CACHE CONFIGURATION result
+        # fastcgi_cache_bypass $bypass $do_not_cache;
+        # fastcgi_no_cache $do_not_cache;
 
-        ## check rules
-        CheckRule "$SQL >= 10" BLOCK;
-        CheckRule "$RFI >= 8" BLOCK;
-        CheckRule "$TRAVERSAL >= 4" BLOCK;
-        CheckRule "$EVADE >= 4" BLOCK;
-        CheckRule "$XSS >= 8" BLOCK;
-
+        add_header X-Cache-Status $upstream_cache_status;
 {% endif %}
-        try_files $uri $uri/ /index.php?$args;
     }
     location ~ \.php$ {
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
@@ -142,37 +136,19 @@ server {
 {% endif %}
 {% if item.type == "proxy" %}
     location / {
-        client_max_body_size 0;
-        gzip on;
-        proxy_http_version 1.1;
-{% if item.naxsi_enable is defined and naxsi_enable %}
-        ## Naxsi rules
-        {% if item.naxsi_mode_learning %}
-        LearningMode;
-        {% endif %}
+        {% include "vhost-location-all.conf.j2" %}
 
-        SecRulesEnabled;
-        DeniedUrl "{{ item.naxsi_denied_url }}";
-
-        ## check rules
-        CheckRule "$SQL >= 10" BLOCK;
-        CheckRule "$RFI >= 8" BLOCK;
-        CheckRule "$TRAVERSAL >= 4" BLOCK;
-        CheckRule "$EVADE >= 4" BLOCK;
-        CheckRule "$XSS >= 8" BLOCK;
-
-{% endif %}
 {% if item.cache_enable is defined and item.cache_enable %}
         proxy_redirect off;
-        proxy_cache cache;
+        proxy_cache proxy_cache;
         proxy_cache_valid any {{ item.cache_time }};
         proxy_cache_use_stale error timeout updating;
         proxy_cache_revalidate on;
         proxy_ignore_headers  Expires Cache-Control Set-Cookie;
 
         # CACHE CONFIGURATION result
-        proxy_cache_bypass $bypass $do_not_cache;
-        proxy_no_cache $do_not_cache;
+        # proxy_cache_bypass $bypass $do_not_cache;
+        # proxy_no_cache $do_not_cache;
 
         add_header X-Cache-Status $upstream_cache_status;
 

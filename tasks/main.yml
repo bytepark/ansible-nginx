@@ -52,6 +52,14 @@
   notify:
   - reload nginx
 
+- name: "[NGINX] Copy secure-location.conf"
+  template:
+    src: "secure-location.conf.j2"
+    dest: "/etc/nginx/secure-location.conf"
+    mode: 0644
+  notify:
+  - reload nginx
+
 - name: "[NGINX] Copy pagespeed.conf"
   template:
     src: "pagespeed.conf.j2"

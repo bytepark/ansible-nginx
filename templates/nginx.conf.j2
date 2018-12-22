@@ -32,15 +32,19 @@ http {
     ##
     # Cache Settings
     ##
-    proxy_cache_path /dev/shm/nginx keys_zone=cache:10m levels=1:2 inactive=600s max_size=100m;
+    proxy_cache_path /dev/shm/nginx/proxy keys_zone=proxy_cache:10m levels=1:2 inactive=600s max_size=100m;
     proxy_cache_key $host:$server_port$uri$is_args$args;
     proxy_ignore_headers "Cache-Control";
     proxy_ignore_headers "Expires";
 
+    fastcgi_cache_path /dev/shm/nginx/fastcgi keys_zone=fastcgi_cache:10m levels=1:2 inactive=600s max_size=100m;
+    fastcgi_cache_key $host:$server_port$uri$is_args$args;
+    fastcgi_ignore_headers "Cache-Control";
+    fastcgi_ignore_headers "Expires";
+
     ##
     # Logging Settings
     ##
-
     access_log /var/log/nginx/access.log;
     error_log /var/log/nginx/error.log;
 
@@ -50,7 +54,6 @@ http {
     ##
     # Gzip Settings
     ##
-
     gzip on;
     gzip_disable "msie6";
 

@@ -1,0 +1,22 @@
+        client_max_body_size 0;
+        gzip on;
+        proxy_http_version 1.1;
+
+{% if item.naxsi_enable is defined and item.naxsi_enable %}
+        ## Naxsi rules
+        {% if item.naxsi_mode_learning %}
+        LearningMode;
+        {% endif %}
+
+        SecRulesEnabled;
+        DeniedUrl "{{ item.naxsi_denied_url }}";
+
+        ## check rules
+        CheckRule "$SQL >= 10" BLOCK;
+        CheckRule "$RFI >= 8" BLOCK;
+        CheckRule "$TRAVERSAL >= 4" BLOCK;
+        CheckRule "$EVADE >= 4" BLOCK;
+        CheckRule "$XSS >= 8" BLOCK;
+
+{% endif %}
+        try_files $uri $uri/ /index.php?$args;
