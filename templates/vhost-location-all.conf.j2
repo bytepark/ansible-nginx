@@ -4,9 +4,9 @@
 
 {% if item.naxsi_enable is defined and item.naxsi_enable %}
         ## Naxsi rules
-        {% if item.naxsi_mode_learning %}
+{% if item.naxsi_mode_learning %}
         LearningMode;
-        {% endif %}
+{% endif %}
 
         SecRulesEnabled;
         DeniedUrl "{{ item.naxsi_denied_url }}";

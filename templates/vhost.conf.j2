@@ -105,11 +105,11 @@ server {
 
 {% endif %}
 
-{% include "vhost-location-secure.conf.j2" %}
+    include /etc/nginx/secure-location.conf;
 
 {% if item.type == "fastcgi" %}
     location / {
-        {% include "vhost-location-all.conf.j2" %}
+{% include "templates/vhost-location-all.conf.j2" %}
 
 {% if item.cache_enable is defined and item.cache_enable %}
         fastcgi_cache fastcgi_cache;
@@ -136,7 +136,7 @@ server {
 {% endif %}
 {% if item.type == "proxy" %}
     location / {
-        {% include "vhost-location-all.conf.j2" %}
+{% include "templates/vhost-location-all.conf.j2" %}
 
 {% if item.cache_enable is defined and item.cache_enable %}
         proxy_redirect off;
