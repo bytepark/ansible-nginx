@@ -12,6 +12,7 @@
   apt_repository:
     repo: "{{ nginx_repo }}"
     state: present
+  when: nginx_repo is defined
 
 - name: "[NGINX] Install Nginx"
   apt:

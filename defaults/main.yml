@@ -1,8 +1,8 @@
 ---
 # repo url - either deb or ppa (e.g "ppa:bytepark/nginx-mainline")
-nginx_repo: "deb https://nginx.org/packages/ubuntu/ bionic nginx"
+# nginx_repo: "deb https://nginx.org/packages/ubuntu/ bionic nginx"
 # repo key - when repo needs signing key
-#nginx_repo_key: http://nginx.org/keys/nginx_signing.key
+# nginx_repo_key: http://nginx.org/keys/nginx_signing.key
 # package name to install (can allso be nginx-full e.g)
 nginx_package: "nginx"
 
