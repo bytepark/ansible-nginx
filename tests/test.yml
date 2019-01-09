@@ -2,6 +2,6 @@
 - hosts: localhost
   remote_user: root
   vars:
-    nginx_repo: "ppa:bytepark/nginx-mainline"
+    nginx_repo_key: "http://nginx.org/keys/nginx_signing.key"
   roles:
     - ansible-nginx
