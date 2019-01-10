@@ -22,6 +22,11 @@ nginx_repo_key: ""
 # package name to install (can allso be nginx-full e.g)
 nginx_package: "nginx"
 
+# optional config in nginx.conf
+nginx_extra_conf_options: ""
+# optional config in nginx.conf http block
+nginx_extra_http_options: ""
+
 # list of vhosts with following keys
 #   type                        - static/fastcgi/proxy - which type to use
 #   hostname                    - main server name
