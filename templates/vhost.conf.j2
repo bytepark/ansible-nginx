@@ -107,6 +107,11 @@ server {
 
     include /etc/nginx/secure-location.conf;
 
+{% if item.extra_server_options is defined and item.extra_server_options %}
+    {{ item.extra_server_options|indent(4, False) }}
+{% endif %}
+
+
 {% if item.type == "fastcgi" %}
     location / {
 {% include "templates/vhost-location-all.conf.j2" %}

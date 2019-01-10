@@ -42,7 +42,11 @@ nginx_extra_http_options: ""
 #   naxsi_enable                - true/false - whether to include NAXSI WAF
 #   naxsi_mode_learning         - true/false - whether to enable learningmode
 #   naxsi_denied_url            - url for cases of denied requests
- 
+#   extra_server_options        - extra nginx server conf options
+#                                 Example:
+#                                   extra_server_options: |
+#                                     include /etc/nginx/y.conf;
+#                                     include /etc/nginx/x.conf;
 nginx_vhosts: []
 
 #   nginx_ssl_type              - modern/intermediate - cipher config from mozilla server configurator
