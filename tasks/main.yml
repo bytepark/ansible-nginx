@@ -45,6 +45,16 @@
   get_url: url={{ nginx_naxsi_rules_file }} dest=/etc/nginx/naxsi_core.rules
   when: nginx_naxsi_enable and nginx_naxsi_rules_file is defined
 
+- name: "[NGINX] Copy extra files"
+  when:	nginx_extra_files is defined and nginx_extra_files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('preserve') }}"
+  with_items: "{{ nginx_extra_files }}"
+
 - name: "[NGINX] Copy secure.conf"
   template:
     src: "secure.conf.j2"

@@ -27,6 +27,9 @@ nginx_extra_conf_options: ""
 # optional config in nginx.conf http block
 nginx_extra_http_options: ""
 
+# upload custom files to reference later. files can be in "files/" directory in your project
+nginx_extra_files: []
+
 # list of vhosts with following keys
 #   type                        - static/fastcgi/proxy - which type to use
 #   hostname                    - main server name
