@@ -1,7 +1,7 @@
 # {{ ansible_managed }}
 
 # ------------------------------------------------------------------
-# Default Server - Port 80
+# VHost - Port 80
 # ------------------------------------------------------------------
 server {
 {% if item.hostname is defined and item.additional_server_names is defined %}
@@ -29,7 +29,11 @@ server {
         alias /etc/ssl/dehydrated;
     }
 
-{% if item.enable_ssl %}
+{% if item.default_redirect_to %}
+    location / {
+        rewrite ^(.*) {{ item.redirect_to }} permanent;
+    }
+{% elif item.enable_ssl %}
     location / {
         rewrite ^(.*) https://$host$uri permanent;
     }
@@ -37,10 +41,10 @@ server {
 }
 
 
-{% if item.enable_ssl %}
+{% if item.enable_ssl_redirect %}
 {% if item.additional_server_names is defined %}
 # ------------------------------------------------------------------
-# Redirect Domains - Port 443
+# VHost Redirect Domains - Port 443
 # ------------------------------------------------------------------
 server {
     server_name {{ item.additional_server_names }};
@@ -77,7 +81,7 @@ server {
 
 {% if item.enable_ssl %}
 # ------------------------------------------------------------------
-# Default Server - Port 443
+# VHost Default Server - Port 443
 # ------------------------------------------------------------------
 server {
     server_name {{ item.hostname }};

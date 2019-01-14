@@ -35,6 +35,7 @@ nginx_extra_files: []
 #   hostname                    - main server name
 #   additional_server_names     - alias domains
 #   is_default                  - whether this vhost is the default listener
+#   default_redirect_to         - where to redirect all requests to
 #   docroot                     - document root for vhost
 #   logfile_separate            - true/false - for separate log file for this vhost
 #   logfile_format              - name of a different logfile format defined in nginx.conf 
