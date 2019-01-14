@@ -29,7 +29,7 @@ server {
         alias /etc/ssl/dehydrated;
     }
 
-{% if item.default_redirect_to %}
+{% if item.default_redirect_to is defined and item.default_redirect_to %}
     location / {
         rewrite ^(.*) {{ item.default_redirect_to }} permanent;
     }
@@ -41,7 +41,7 @@ server {
 }
 
 
-{% if item.enable_ssl_redirect %}
+{% if item.enable_ssl_redirect is defined and item.enable_ssl_redirect %}
 {% if item.additional_server_names is defined %}
 # ------------------------------------------------------------------
 # VHost Redirect Domains - Port 443
