@@ -40,6 +40,9 @@ nginx_extra_files: []
 #   logfile_separate            - true/false - for separate log file for this vhost
 #   logfile_format              - name of a different logfile format defined in nginx.conf 
 #   enable_ssl                  - true/false - whether to enable SSL
+#   ssl_certificate             - location of SSL cert
+#   ssl_certificate_key         - location of SSL key
+#   ssl_trusted_certificate     - location of SSL trusted chain certs
 #   cache_enable                - true/false - whether to enable caching (fastcgi/proxy only)
 #   cache_time                  - e.g. 30s - how long to cache valid responses
 #   enable_websocket            - true/false - for proxy setups, enable websocket listening
