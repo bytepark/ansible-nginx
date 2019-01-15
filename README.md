@@ -27,6 +27,11 @@ nginx_extra_conf_options: ""
 # optional config in nginx.conf http block
 nginx_extra_http_options: ""
 
+# number of nginx worker processes 
+nginx_worker_processes: 2
+# hash bucket size
+nginx_server_names_hash_bucket_size: 64
+
 # upload custom files to reference later. files can be in "files/" directory in your project
 nginx_extra_files: []
 
