@@ -19,4 +19,6 @@
         CheckRule "$XSS >= 8" BLOCK;
 
 {% endif %}
-        try_files $uri $uri/ /index.php?$args;
+{% if item.disable_try_files is not defined or item.disable_try_files != true %}
+        {{ item.location_try_files | default('try_files $uri $uri/ /index.php?$args;') }}
+{% endif %}

@@ -47,6 +47,7 @@ nginx_server_names_hash_bucket_size: 64
 #   ssl_certificate             - location of SSL cert
 #   ssl_certificate_key         - location of SSL key
 #   ssl_trusted_certificate     - location of SSL trusted chain certs
+#   disable_try_files           - don't add a predefined try_files directive to location
 #   cache_enable                - true/false - whether to enable caching (fastcgi/proxy only)
 #   cache_time                  - e.g. 30s - how long to cache valid responses
 #   enable_websocket            - true/false - for proxy setups, enable websocket listening
