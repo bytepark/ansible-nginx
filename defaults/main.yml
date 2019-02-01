@@ -22,7 +22,7 @@ nginx_extra_conf_options: ""
 nginx_extra_http_options: ""
 
 # Example:
-# nginx_extra_files: 
+# nginx_extra_files:
 # - src: files/foo.txt
 #   dest: /tmp/foo.txt
 nginx_extra_files: []
@@ -39,6 +39,7 @@ nginx_server_names_hash_bucket_size: 64
 #   is_default                  - whether this vhost is the default listener
 #   default_redirect_to         - where to redirect all requests to
 #   docroot                     - document root for vhost
+#   docroot_fastcgi             - optional document root for fastcgi php location
 #   logfile_separate            - true/false - for separate log file for this vhost
 #   logfile_format              - name of a different logfile format defined in nginx.conf
 #   enable_ssl                  - true/false - whether to enable SSL vor the main host

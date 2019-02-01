@@ -158,6 +158,9 @@ server {
 {% endif %}
     }
     location ~ \.php$ {
+        {% if item.docroot_fastcgi is defined %}
+        root   {{ item.docroot_fastcgi }};
+        {% endif %}
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
         # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
         fastcgi_pass {{ item.fastcgi_address }};

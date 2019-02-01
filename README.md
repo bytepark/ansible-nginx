@@ -42,6 +42,7 @@ nginx_extra_files: []
 #   is_default                  - whether this vhost is the default listener
 #   default_redirect_to         - where to redirect all requests to
 #   docroot                     - document root for vhost
+#   docroot_fastcgi             - optional document root for fastcgi php location
 #   logfile_separate            - true/false - for separate log file for this vhost
 #   logfile_format              - name of a different logfile format defined in nginx.conf 
 #   enable_ssl                  - true/false - whether to enable SSL
