@@ -194,7 +194,7 @@ server {
         proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
         proxy_set_header    X-Forwarded-Proto   $scheme;
 
-        {% if item.enable_websocket is defined %}
+        {% if item.enable_websocket is defined and item.enable_websocket %}
         proxy_set_header    Upgrade             $http_upgrade;
         proxy_set_header    Connection          "upgrade";
         {% endif %}
