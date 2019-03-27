@@ -3,12 +3,16 @@
 
 {% if item.naxsi_enable is defined and item.naxsi_enable %}
         ## Naxsi rules
-{% if item.naxsi_mode_learning %}
+{% if item.naxsi_mode_learning is defined and item.naxsi_mode_learning %}
         LearningMode;
 {% endif %}
 
         SecRulesEnabled;
         DeniedUrl "{{ item.naxsi_denied_url }}";
+
+{% if item.naxsi_whitelist_file is defined %}
+        include {{ item.naxsi_whitelist_file }};
+{% endif %}
 
         ## check rules
         CheckRule "$SQL >= 10" BLOCK;
