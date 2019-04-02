@@ -56,6 +56,7 @@ nginx_extra_files: []
 #   naxsi_enable                - true/false - whether to include NAXSI WAF
 #   naxsi_mode_learning         - true/false - whether to enable learningmode
 #   naxsi_denied_url            - url for cases of denied requests
+#   naxsi_whitelist_file        - path for a naxsi whitelist file
 #   extra_server_options        - extra nginx server conf options
 #                                 Example:
 #                                   extra_server_options: |
