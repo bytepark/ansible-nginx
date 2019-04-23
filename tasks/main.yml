@@ -98,6 +98,8 @@
   when: item.docroot is defined
   file:
     path:  "{{ item.docroot }}/app/web"
+    owner: "{{ nginx_user | default('www-data') }}"
+    group: "{{ nginx_group | default('www-data') }}"
     state: directory
   with_items:
     - "{{ nginx_vhosts | default([]) }}"
