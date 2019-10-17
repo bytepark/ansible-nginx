@@ -97,7 +97,7 @@
 - name: "[NGINX] Check and setup doc roots"
   when: item.docroot is defined
   file:
-    path:  "{{ item.docroot }}/app/web"
+    path:  "{{ item.docroot }}"
     owner: "{{ item.owner | default('www-data') }}"
     group: "{{ item.group | default('www-data') }}"
     state: directory
