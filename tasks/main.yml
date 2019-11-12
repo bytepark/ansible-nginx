@@ -19,6 +19,8 @@
     update_cache: yes
     name: '{{ nginx_package }}'
     state: present
+  notify:
+    - reload nginx
 
 - name: "[NGINX Secure] | Generate dhparam file"
   command: openssl dhparam -out {{ nginx_dhparam_path }} {{ nginx_dhparam_encryption_size }}
