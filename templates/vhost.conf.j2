@@ -146,7 +146,13 @@ server {
 
 {% if item.cache_enable is defined and item.cache_enable %}
         fastcgi_cache fastcgi_cache;
+{% if item.cache_types is defined %}
+{% for type in item.cache_types %}
+        fastcgi_cache_valid {{ type.code }} {{ type.time }};
+{% endfor %}
+{% else %}
         fastcgi_cache_valid any {{ item.cache_time }};
+{% endif %}
         fastcgi_cache_revalidate on;
         fastcgi_ignore_headers Expires Cache-Control Set-Cookie;
 
@@ -177,7 +183,13 @@ server {
 {% if item.cache_enable is defined and item.cache_enable %}
         proxy_redirect off;
         proxy_cache proxy_cache;
+{% if item.cache_types is defined %}
+{% for type in item.cache_types %}
+        proxy_cache_valid {{ type.code }} {{ type.time }};
+{% endfor %}
+{% else %}
         proxy_cache_valid any {{ item.cache_time }};
+{% endif %}
         proxy_cache_use_stale error timeout updating;
         proxy_cache_revalidate on;
         proxy_ignore_headers  Expires Cache-Control Set-Cookie;
