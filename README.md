@@ -52,7 +52,8 @@ nginx_extra_files: []
 #   disable_try_files           - don't add a predefined try_files directive to location
 #   cache_enable                - true/false - whether to enable caching (fastcgi/proxy only)
 #   cache_time                  - e.g. 30s - how long to cache valid responses
-#   cache_types                 - dict with entries code and time for individual caching times
+#   cache_types                 - dicts with entries code and time for individual caching times
+#   proxy_headers               - dicts with entries key and value for individual proxy_headers
 #   enable_websocket            - true/false - for proxy setups, enable websocket listening
 #   naxsi_enable                - true/false - whether to include NAXSI WAF
 #   naxsi_mode_learning         - true/false - whether to enable learningmode
