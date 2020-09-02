@@ -173,6 +173,10 @@ server {
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_index index.php;
         include fastcgi_params;
+{% if item.extra_location_options is defined and item.extra_location_options %}
+        {{ item.extra_location_options|indent(4, False) }}
+{% endif %}
+
     }
 
 {% endif %}
@@ -219,6 +223,10 @@ server {
         proxy_read_timeout  600;
 
         proxy_pass          {{ item.proxy_address }};
+{% if item.extra_location_options is defined and item.extra_location_options %}
+        {{ item.extra_location_options|indent(4, False) }}
+{% endif %}
+
     }
 
 {% endif %}
