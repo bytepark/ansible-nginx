@@ -140,7 +140,7 @@ server {
 {% endif %}
 
 
-{% if item.type == "fastcgi" %}
+{% if item.type is defined and item.type == "fastcgi" %}
     location / {
 {% include "templates/vhost-location-all.conf.j2" %}
 
@@ -180,7 +180,7 @@ server {
     }
 
 {% endif %}
-{% if item.type == "proxy" %}
+{% if item.type is defined and item.type == "proxy" %}
     location / {
 {% include "templates/vhost-location-all.conf.j2" %}
 
