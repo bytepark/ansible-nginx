@@ -171,6 +171,9 @@ server {
         # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
         fastcgi_pass {{ item.fastcgi_address }};
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        # Hide PHP headers
+        fastcgi_hide_header             X-Powered-By;
+        fastcgi_hide_header             X-CF-Powered-By;
         fastcgi_index index.php;
         include fastcgi_params;
 {% if item.extra_location_options is defined and item.extra_location_options %}
