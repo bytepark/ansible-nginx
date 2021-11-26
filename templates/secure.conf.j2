@@ -33,9 +33,9 @@ ssl_dhparam {{nginx_dhparam_path}};
 
 # add Security Headers
 {% if nginx_secure_headers is defined %}
-  {% for header in nginx_secure_headers %}
+{% for header in nginx_secure_headers %}
 add_header {{ header.key }} {{ header.value }};
-  {% endfor %}
+{% endfor %}
 {% else %}
 add_header X-Frame-Options "SAMEORIGIN" always;
 add_header X-Xss-Protection "1; mode=block" always;

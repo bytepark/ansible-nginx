@@ -22,6 +22,10 @@
         CheckRule "$XSS >= 8" BLOCK;
 
 {% endif %}
+{% if item.extra_all_location_option is defined and item.extra_all_location_option %}
+    {{ item.extra_all_location_option|indent(4, False) }}
+{% endif %}
+
 {% if item.disable_try_files is not defined or item.disable_try_files != true %}
         {{ item.location_try_files | default('try_files $uri $uri/ /index.php?$args;') }}
 {% endif %}
