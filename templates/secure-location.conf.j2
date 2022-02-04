@@ -59,7 +59,7 @@ location ~ ^(?:vendor|typo3_src|typo3temp/var) {
 
 ## MATOMO
 # Block access to config and tmp and lang files
-location ~ ^.*(?:tmp|config.ini.php|lang|en.json) {
+location ~ ^.*(?:tmp|config.ini.php|en.json) {
     deny all;
 }
 
@@ -74,7 +74,7 @@ location ~ /\.ht {
     return 403;
 }
 
-location ~ ^/(libs|vendor|plugins|misc|node_modules) {
+location ~ ^/(libs|vendor|misc|node_modules) {
     deny all;
     return 403;
 }
