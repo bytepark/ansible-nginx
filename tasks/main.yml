@@ -65,6 +65,15 @@
   notify:
   - reload nginx
 
+- name: "[NGINX] Copy secure-location.conf includes"
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/nginx/{{ item }}"
+    mode: 0644
+  loop:
+    - secure-location.typo3.conf
+    - secure-location.matomo.conf
+
 - name: "[NGINX] Copy secure-location.conf"
   template:
     src: "secure-location.conf.j2"
