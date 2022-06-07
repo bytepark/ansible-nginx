@@ -48,7 +48,7 @@
   when: nginx_naxsi_enable and nginx_naxsi_rules_file is defined
 
 - name: "[NGINX] Copy extra files"
-  when:	nginx_extra_files is defined and nginx_extra_files
+  when: nginx_extra_files is defined and nginx_extra_files
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
