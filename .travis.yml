@@ -2,8 +2,8 @@
 language: python
 #python: "2.7"
 
-# use ubuntu 20.04 for build
-dist: focal
+# use ubuntu 22.04 for build
+dist: jammy
 
 env:
 - PLAYBOOK=test.yml
