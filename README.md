@@ -27,6 +27,8 @@ nginx_extra_conf_options: ""
 # optional config in nginx.conf http block
 nginx_extra_http_options: ""
 
+# number of nginx worker connections
+nginx_worker_connections: 1024
 # number of nginx worker processes 
 nginx_worker_processes: 2
 # hash bucket size

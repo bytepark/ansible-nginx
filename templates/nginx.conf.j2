@@ -4,7 +4,7 @@ worker_processes {{ nginx_worker_processes | default('2') }};
 pid /run/nginx.pid;
 
 events {
-    worker_connections 1024;
+    worker_connections {{ nginx_worker_connections }};
     use epoll;
     # multi_accept on;
 }

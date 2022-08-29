@@ -72,3 +72,5 @@ nginx_dhparam_encryption_size: 2048
 
 nginx_naxsi_enable: false
 nginx_naxsi_rules_file: "https://raw.githubusercontent.com/nbs-system/naxsi/master/naxsi_config/naxsi_core.rules"
+
+nginx_worker_connections: 1024
