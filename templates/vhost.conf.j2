@@ -122,9 +122,20 @@ server {
     ssl_trusted_certificate /etc/ssl/certs/{{ item.hostname }}/fullchain.pem;
 {% endif %}
 
+{% if item.auth_satisfy is defined %}
+    satisfy {{ item.auth_satisfy }};
+    
+{% endif %}
+{% if item.auth_allowed_ips is defined %}
+{% for ip in item.auth_allowed_ips %}
+    allow {{ ip }};
+{% endfor %}
+    deny all;
+
+{% endif %}
 {% if item.auth_basic_file is defined %}
-        auth_basic            "Restricted";
-        auth_basic_user_file  {{ item.auth_basic_file }};
+    auth_basic            "Restricted";
+    auth_basic_user_file  {{ item.auth_basic_file }};
 
 {% endif %}
 {% if item.docroot is defined %}

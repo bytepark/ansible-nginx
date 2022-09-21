@@ -52,6 +52,10 @@ nginx_extra_files: []
 #   ssl_certificate_key         - location of SSL key
 #   ssl_trusted_certificate     - location of SSL trusted chain certs
 #   disable_try_files           - don't add a predefined try_files directive to location
+#   auth                        - passwort used for htpasswd
+#   auth_basic_file             - path of the basic auth file
+#   auth_satisfy                - satisfy mode used for authentication (any/all)
+#   auth_allowed_ips            - list of allowed ips
 #   cache_enable                - true/false - whether to enable caching (fastcgi/proxy only)
 #   cache_time                  - e.g. 30s - how long to cache valid responses
 #   cache_types                 - dicts with entries code and time for individual caching times
