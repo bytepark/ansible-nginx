@@ -55,6 +55,7 @@ nginx_server_names_hash_bucket_size: 64
 #   naxsi_mode_learning         - true/false - whether to enable learningmode
 #   naxsi_denied_url            - url for cases of denied requests
 #   naxsi_whitelist_file:       - path for a naxsi whitelist file
+#   nginx_proxy_cache_max_size  - max size of proxy cache
 #   extra_server_options        - extra nginx server conf options
 #                                 Example:
 #                                   extra_server_options: |
@@ -74,3 +75,11 @@ nginx_naxsi_enable: false
 nginx_naxsi_rules_file: "https://raw.githubusercontent.com/nbs-system/naxsi/master/naxsi_config/naxsi_core.rules"
 
 nginx_worker_connections: 1024
+nginx_proxy_cache_max_size: 100m
+nginx_proxy_cache_keys_zone: proxy_cache:10m
+nginx_proxy_cache_levels: 1:2
+nginx_proxy_cache_inactive: 600s
+nginx_fastcgi_cache_max_size: 100m
+nginx_fastcgi_cache_keys_zone: fastcgi_cache:10m
+nginx_fastcgi_cache_levels: 1:2
+nginx_fastcgi_cache_inactive: 600s
