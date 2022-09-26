@@ -6,7 +6,7 @@ pid /run/nginx.pid;
 events {
     worker_connections {{ nginx_worker_connections }};
     use epoll;
-    # multi_accept on;
+    multi_accept {{ nginx_multi_accept }};
 }
 
 {% if nginx_extra_conf_options %}

@@ -83,3 +83,5 @@ nginx_fastcgi_cache_max_size: 100m
 nginx_fastcgi_cache_keys_zone: fastcgi_cache:10m
 nginx_fastcgi_cache_levels: 1:2
 nginx_fastcgi_cache_inactive: 600s
+
+nginx_multi_accept: off
