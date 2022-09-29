@@ -1,0 +1,82 @@
+- name: "[NGINX Secure] | Generate dhparam file"
+  command: openssl dhparam -out {{ nginx_dhparam_path }} {{ nginx_dhparam_encryption_size }}
+  args:
+    creates: "{{ nginx_dhparam_path }}"
+  when: nginx_dhparam_path is defined and nginx_dhparam_path
+  notify:
+    - reload nginx
+
+- name: Create auth directory
+  file:
+    path:  "/etc/nginx/auth"
+    state: directory
+
+- name: "[NGINX] Create http basic auth files"
+  copy:
+    content: "{{ item.auth }}"
+    dest: "{{ item.auth_basic_file }}"
+  when: item.auth is defined and item.auth_basic_file is defined
+  with_items:
+    - "{{ nginx_vhosts | default([]) }}"
+
+- name: "[NGINX] Get Naxsi Rules"
+  get_url: url={{ nginx_naxsi_rules_file }} dest=/etc/nginx/naxsi_core.rules
+  when: nginx_naxsi_enable and nginx_naxsi_rules_file is defined
+
+- name: "[NGINX] Copy extra files"
+  when: nginx_extra_files is defined and nginx_extra_files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('preserve') }}"
+  with_items: "{{ nginx_extra_files }}"
+
+- name: "[NGINX] Copy secure.conf"
+  template:
+    src: "secure.conf.j2"
+    dest: "/etc/nginx/secure.conf"
+    mode: 0644
+  notify:
+  - reload nginx
+
+- name: "[NGINX] Copy secure-location.conf includes"
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/nginx/{{ item }}"
+    mode: 0644
+  loop:
+    - secure-location.typo3.conf
+    - secure-location.matomo.conf
+
+- name: "[NGINX] Copy secure-location.conf"
+  template:
+    src: "secure-location.conf.j2"
+    dest: "/etc/nginx/secure-location.conf"
+    mode: 0644
+  notify:
+  - reload nginx
+
+- name: "[NGINX] Copy pagespeed.conf"
+  template:
+    src: "pagespeed.conf.j2"
+    dest: "/etc/nginx/pagespeed.conf"
+    mode: 0644
+  notify:
+    - reload nginx
+
+- name: "[NGINX] Copy nginx.conf"
+  template:
+    src: "nginx.conf.j2"
+    dest: "/etc/nginx/nginx.conf"
+    mode: 0644
+  notify:
+    - reload nginx
+
+- name: "[NGINX] Disable the default site"
+  file:
+    path: "/etc/nginx/conf.d/default.conf"
+    state: absent
+  notify:
+    - reload nginx

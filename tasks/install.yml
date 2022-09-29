@@ -1,0 +1,20 @@
+- name: "[NGINX] Add Signing Key"
+  retries: 3
+  apt_key:
+    url: "{{ nginx_repo_key }}"
+  when: nginx_repo_key is defined
+
+- name: "[NGINX] Add repo to sources list"
+  retries: 3
+  apt_repository:
+    repo: "{{ nginx_repo }}"
+    state: present
+  when: nginx_repo is defined
+
+- name: "[NGINX] Install Nginx"
+  apt:
+    update_cache: yes
+    name: '{{ nginx_package }}'
+    state: present
+  notify:
+    - reload nginx

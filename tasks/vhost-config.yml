@@ -1,0 +1,20 @@
+- name: "[NGINX] Check and setup doc roots"
+  when: item.docroot is defined
+  file:
+    path:  "{{ item.docroot }}"
+    owner: "{{ item.owner | default('www-data') }}"
+    group: "{{ item.group | default('www-data') }}"
+    state: directory
+  with_items:
+    - "{{ nginx_vhosts | default([]) }}"
+
+- name: "[NGINX] Create the configuration file for vHosts"
+  when: nginx_vhosts is defined
+  template:
+    src: "vhost.conf.j2"
+    dest: /etc/nginx/conf.d/{{ item.hostname }}.conf
+    mode: 0644
+  with_items:
+    - "{{ nginx_vhosts }}"
+  notify:
+    - reload nginx
