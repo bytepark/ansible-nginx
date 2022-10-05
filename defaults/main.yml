@@ -77,11 +77,11 @@ nginx_naxsi_rules_file: "https://raw.githubusercontent.com/nbs-system/naxsi/mast
 nginx_worker_connections: 1024
 nginx_proxy_cache_max_size: 100m
 nginx_proxy_cache_keys_zone: proxy_cache:10m
-nginx_proxy_cache_levels: 1:2
+nginx_proxy_cache_levels: "1:2"
 nginx_proxy_cache_inactive: 600s
 nginx_fastcgi_cache_max_size: 100m
 nginx_fastcgi_cache_keys_zone: fastcgi_cache:10m
-nginx_fastcgi_cache_levels: 1:2
+nginx_fastcgi_cache_levels: "1:2"
 nginx_fastcgi_cache_inactive: 600s
 
-nginx_multi_accept: off
+nginx_multi_accept: "off"
