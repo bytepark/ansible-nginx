@@ -38,12 +38,12 @@ http {
     # Cache Settings
     ##
     proxy_cache_path /dev/shm/nginx_proxy keys_zone={{ nginx_proxy_cache_keys_zone }} levels={{ nginx_proxy_cache_levels }} inactive={{ nginx_proxy_cache_inactive }} max_size={{ nginx_proxy_cache_max_size }};
-    proxy_cache_key $host:$server_port$uri$is_args$args;
+    proxy_cache_key $host:$server_port$request_uri;
     proxy_ignore_headers "Cache-Control";
     proxy_ignore_headers "Expires";
 
     fastcgi_cache_path /dev/shm/nginx_fastcgi keys_zone={{ nginx_fastcgi_cache_keys_zone }} levels={{ nginx_fastcgi_cache_levels }} inactive={{ nginx_fastcgi_cache_inactive }} max_size={{ nginx_fastcgi_cache_max_size }};
-    fastcgi_cache_key $host:$server_port$uri$is_args$args;
+    fastcgi_cache_key $host:$server_port$request_uri;
     fastcgi_ignore_headers "Cache-Control";
     fastcgi_ignore_headers "Expires";
 
