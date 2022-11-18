@@ -1,0 +1,15 @@
+{% if item.ssl_certificate is defined %}
+ssl_certificate         {{ item.ssl_certificate }};
+{% else %}
+ssl_certificate         /etc/ssl/certs/{{ item.hostname }}/fullchain.pem;
+{% endif %}
+{% if item.ssl_certificate_key is defined %}
+    ssl_certificate_key     {{ item.ssl_certificate_key }};
+{% else %}
+    ssl_certificate_key     /etc/ssl/certs/{{ item.hostname }}/privkey.pem;
+{% endif %}
+{% if item.ssl_trusted_certificate is defined %}
+    ssl_trusted_certificate {{ item.ssl_trusted_certificate }};
+{% else %}
+    ssl_trusted_certificate /etc/ssl/certs/{{ item.hostname }}/fullchain.pem;
+{% endif %}

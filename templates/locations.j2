@@ -1,0 +1,17 @@
+{% include "templates/auth.j2" %}
+
+    include /etc/nginx/secure-location.conf;
+
+{% if item.extra_server_options is defined and item.extra_server_options %}
+    {{ item.extra_server_options|indent(4, False) }}
+{% endif %}
+
+{% if item.type is defined and item.type == "fastcgi" %}
+    {% include "templates/type.fastcgi.j2" %}
+{% endif %}
+{% if item.type is defined and item.type == "proxy" %}
+    {% include "templates/type.proxy.j2" %}
+{% endif %}
+{% if item.pagespeed is defined and item.pagespeed %}
+    include /etc/nginx/pagespeed.conf;
+{% endif %}

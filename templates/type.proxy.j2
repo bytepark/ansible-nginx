@@ -1,0 +1,51 @@
+location / {
+{% include "templates/vhost-location-all.conf.j2" %}
+
+{% if item.cache_enable is defined and item.cache_enable %}
+        proxy_redirect off;
+        proxy_cache proxy_cache;
+{% if item.cache_types is defined %}
+{% for type in item.cache_types %}
+        proxy_cache_valid {{ type.code }} {{ type.time }};
+{% endfor %}
+{% else %}
+        proxy_cache_valid any {{ item.cache_time }};
+{% endif %}
+        proxy_cache_use_stale error timeout updating;
+        proxy_cache_revalidate on;
+        proxy_ignore_headers  Expires Cache-Control Set-Cookie;
+
+        # CACHE CONFIGURATION result
+        # proxy_cache_bypass $bypass $do_not_cache;
+        # proxy_no_cache $do_not_cache;
+
+        add_header X-Cache-Status $upstream_cache_status;
+
+{% endif %}
+{% if item.proxy_set_header_host is defined %}
+        proxy_set_header    Host                {{ item.proxy_set_header_host }};
+{% else %}
+        proxy_set_header    Host                $http_host;
+{% endif %}
+        proxy_set_header    X-Real-IP           $remote_addr;
+        proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
+        proxy_set_header    X-Forwarded-Proto   $scheme;
+
+        {% if item.enable_websocket is defined and item.enable_websocket %}
+        proxy_set_header    Upgrade             $http_upgrade;
+        proxy_set_header    Connection          "upgrade";
+        {% endif %}
+{% if item.proxy_headers is defined %}
+{% for header in item.proxy_headers %}
+        proxy_set_header    {{ header.key }}    {{ header.value }};
+{% endfor %}
+{% endif %}
+
+        proxy_read_timeout  600;
+
+        proxy_pass          {{ item.proxy_address }};
+{% if item.extra_location_options is defined and item.extra_location_options %}
+        {{ item.extra_location_options|indent(4, False) }}
+{% endif %}
+
+    }

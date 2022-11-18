@@ -1,0 +1,40 @@
+location / {
+{% include "templates/vhost-location-all.conf.j2" %}
+
+{% if item.cache_enable is defined and item.cache_enable %}
+        fastcgi_cache fastcgi_cache;
+{% if item.cache_types is defined %}
+{% for type in item.cache_types %}
+        fastcgi_cache_valid {{ type.code }} {{ type.time }};
+{% endfor %}
+{% else %}
+        fastcgi_cache_valid any {{ item.cache_time }};
+{% endif %}
+        fastcgi_cache_revalidate on;
+        fastcgi_ignore_headers Expires Cache-Control Set-Cookie;
+
+        # CACHE CONFIGURATION result
+        # fastcgi_cache_bypass $bypass $do_not_cache;
+        # fastcgi_no_cache $do_not_cache;
+
+        add_header X-Cache-Status $upstream_cache_status;
+{% endif %}
+    }
+    location ~ \.php$ {
+        {% if item.docroot_fastcgi is defined %}
+        root   {{ item.docroot_fastcgi }};
+        {% endif %}
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
+        fastcgi_pass {{ item.fastcgi_address }};
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        # Hide PHP headers
+        fastcgi_hide_header             X-Powered-By;
+        fastcgi_hide_header             X-CF-Powered-By;
+        fastcgi_index index.php;
+        include fastcgi_params;
+{% if item.extra_location_options is defined and item.extra_location_options %}
+        {{ item.extra_location_options|indent(4, False) }}
+{% endif %}
+
+    }
