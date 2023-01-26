@@ -49,6 +49,7 @@
   loop:
     - secure-location.typo3.conf
     - secure-location.matomo.conf
+    - secure-location.kirby.conf
 
 - name: "[NGINX] Copy secure-location.conf"
   template:
