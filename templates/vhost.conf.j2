@@ -89,7 +89,11 @@ server {
 # VHost Default Server - Port 443
 # ------------------------------------------------------------------
 server {
+{% if item.hostname is defined and item.additional_server_names is defined and (item.enable_ssl_redirect is not defined or item.enable_ssl_redirect is sameas false) %}
+    server_name {{ item.hostname }} {{ item.additional_server_names }};
+{% else %}
     server_name {{ item.hostname }};
+{% endif %}
 
     listen 443 ssl http2 {% if item.is_default is defined %}default{% endif %};
     {% if item.skip_v6 is not defined or not item.skip_v6 %}listen [::]:443 ssl http2 {% if item.is_default is defined %}default{% endif %};{% endif %}
