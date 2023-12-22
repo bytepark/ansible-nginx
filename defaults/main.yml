@@ -72,7 +72,7 @@ nginx_dhparam_path: "/etc/ssl/dhparam.pem"
 nginx_dhparam_encryption_size: 2048
 
 nginx_naxsi_enable: false
-nginx_naxsi_rules_file: "https://raw.githubusercontent.com/nbs-system/naxsi/master/naxsi_config/naxsi_core.rules"
+nginx_naxsi_rules_file: "https://raw.githubusercontent.com/wargio/naxsi/master/naxsi_rules/naxsi_core.rules"
 
 nginx_worker_connections: 1024
 nginx_proxy_cache_max_size: 100m
