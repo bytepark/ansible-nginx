@@ -48,28 +48,41 @@ server {
 # ------------------------------------------------------------------
 # VHost Redirect Domains - Port 443
 # ------------------------------------------------------------------
+
 server {
     server_name {{ item.additional_server_names }};
 
+    {% if nginx_is_125_or_higher %}
+    listen 443 ssl;
+    http2 on;
+    {% else %}
     listen 443 ssl http2;
-    {% if item.skip_v6 is not defined or not item.skip_v6 %}listen [::]:443 ssl http2;{% endif %}
+    {% endif %}
+
+    {% if item.skip_v6 is not defined or not item.skip_v6 %}
+	    {% if nginx_is_125_or_higher %}
+        listen [::]:443 ssl;
+        {% else %}
+        listen [::]:443 ssl http2;
+        {% endif %}
+    {% endif %}
 
     {% include "templates/ssl-certificates.j2" %}
 
-{% if item.docroot is defined %}
-    root   {{ item.docroot }};
-    index  index.html index.htm index.php;
-{% endif %}
+    {% if item.docroot is defined %}
+        root   {{ item.docroot }};
+        index  index.html index.htm index.php;
+    {% endif %}
 
-{% if nginx_enable_hsts %}
-    # HSTS (ngx_http_headers_module is required) (15768000 seconds = 6 months)
-    add_header "Strict-Transport-Security: max-age=63072000; includeSubDomains; preload";
-{% endif %}
+    {% if nginx_enable_hsts %}
+        # HSTS (ngx_http_headers_module is required) (15768000 seconds = 6 months)
+        add_header "Strict-Transport-Security: max-age=63072000; includeSubDomains; preload";
+    {% endif %}
 
-{% if item.logfile_separate is defined and item.hostname is defined %}
-    access_log /var/log/nginx/{{ item.hostname }}-access.log {{ item.logfile_format }};
-    error_log /var/log/nginx/{{ item.hostname }}-error.log;
-{% endif %}
+    {% if item.logfile_separate is defined and item.hostname is defined %}
+        access_log /var/log/nginx/{{ item.hostname }}-access.log {{ item.logfile_format }};
+        error_log /var/log/nginx/{{ item.hostname }}-error.log;
+    {% endif %}
 
     location '/.well-known/acme-challenge' {
         allow all;
@@ -81,6 +94,7 @@ server {
         rewrite ^(.*) https://{{ item.hostname }}$uri permanent;
     }
 }
+
 {% endif %}
 
 
@@ -95,8 +109,20 @@ server {
     server_name {{ item.hostname }};
 {% endif %}
 
-    listen 443 ssl http2 {% if item.is_default is defined %}default{% endif %};
-    {% if item.skip_v6 is not defined or not item.skip_v6 %}listen [::]:443 ssl http2 {% if item.is_default is defined %}default{% endif %};{% endif %}
+{% if nginx_is_125_or_higher %}
+	listen 443 ssl {% if item.is_default is defined %}default{% endif %};
+	http2 on;
+{% else %}
+	listen 443 ssl http2 {% if item.is_default is defined %}default{% endif %};
+{% endif %}
+
+{% if item.skip_v6 is not defined or not item.skip_v6 %}
+    {% if nginx_is_125_or_higher %}
+		listen [::]:443 ssl {% if item.is_default is defined %}default{% endif %};
+	{% else %}
+		listen [::]:443 ssl http2 {% if item.is_default is defined %}default{% endif %};
+	{% endif %}
+{% endif %}
 
     {% include "templates/ssl-certificates.j2" %}
 
@@ -118,4 +144,5 @@ server {
     {% include "templates/locations.j2" %}
 
 }
+
 {% endif %}

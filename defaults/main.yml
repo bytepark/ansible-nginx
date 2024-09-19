@@ -32,6 +32,8 @@ nginx_worker_processes: 2
 # hash bucket size
 nginx_server_names_hash_bucket_size: 64
 
+nginx_is_125_or_higher: false
+
 # list of vhosts with following keys
 #   type                        - static/fastcgi/proxy - which type to use
 #   hostname                    - main server name
