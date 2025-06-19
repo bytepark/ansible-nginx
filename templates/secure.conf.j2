@@ -19,13 +19,8 @@ ssl_protocols TLSv1.1 TLSv1.2;
 {% endif %}
 ssl_session_timeout 1d;
 
-# OCSP Stapling ---
-# fetch OCSP records from URL in ssl_certificate and cache them
-ssl_stapling on;
-ssl_stapling_verify on;
-
 # OpenDNS
-resolver 1.1.1.1;
+# resolver 1.1.1.1;
 
 # unique dhparam generated with ansible playbook
 # https://gist.github.com/plentz/6737338
